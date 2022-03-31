@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset=utf-8 />
+	<title>Leaflet Lab 06 Quiz</title>
+	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+	<link rel='icon' href='https://newmapsplus.github.io/favicon.ico' type='image/x-icon' />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-locatecontrol/0.72.0/L.Control.Locate.css" integrity="sha512-oA/Bm/ylO3xoKtPSYmEAaIqI7OeW3caUl5RSx1sTrNEUQ83gZYrie3V3TnEI4UkYdzkAKjiQ22dJ3wf6K6encg==" crossorigin="anonymous" />
+	<link href="https://fonts.googleapis.com/css?family=Quicksand:400,700" rel="stylesheet">
+
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: 'Quicksand', sans-serif;
+			font-size: 100%;
+			color: #3d3d3d;
+		}
+
+		h1 {
+			position: absolute;
+			margin-top: 0;
+			top: 10px;
+			left: 15px;
+			font-size: 1.5em;
+			font-family: 'Quicksand', sans-serif;
+			font-weight: 700;
+			letter-spacing: .04em;
+			padding: 10px 15px;
+			/* Add styles to match Leaflet UI elements */
+			background: rgba(256, 256, 256, .3);
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			z-index: 800;
+		}
+
+		h2 {
+			font-family: 'Quicksand', sans-serif;
+			font-size: 1.2em;
+			letter-spacing: .04em;
+
+		}
+
+		#map {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			width: 100%;
+		}
+
+		#about {
+			position: absolute;
+			bottom: 20px;
+			left: 15px;
+			width: 280px;
+			padding: 0 15px;
+			/* Add styles to match Leaflet UI elements */
+			background: rgba(256, 256, 256, .3);
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			z-index: 800;
+		}
+
+		p {
+			font-size: .9em;
+			line-height: 1.5em;
+		}
+
+		a {
+			color: #005daa;
+			text-decoration: none;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+
+		/* Leaflet popup styles */
+		.leaflet-popup-content {
+			font-family: 'Quicksand', sans-serif;
+			font-size: 1.1em;
+		}
+
+		/* 
+		When browser is 900px high or less
+		make the font a little smaller.
+		 */
+		@media screen and (max-height: 400px) {
+
+			#about p,
+			#about h2 {
+				font-size: .6em;
+			}
+
+			h1 {
+				font-size: 1.2em;
+			}
+
+			#about h2 {
+				font-size: 1em;
+			}
+
+			.leaflet-popup-content {
+				font-family: 'Quicksand', sans-serif;
+				font-size: 0.9em;
+			}
+		}
+
+		/* Don't display info block when window is very small */
+		@media screen and (max-height: 200px) {
+
+			#about {
+				display: none;
+			}
+		}
+	</style>
+</head>
+
+<body>
+
+	<h1>Fridays after work</h1>
+
+	<div id='map'></div>
+
+	<section id="about">
+		<h2>Find me!</h2>
+		<p>It's a tradition to find a comforting friend after a long hard week at work. Only click on the path or start/end
+			points to return my location.
+		</p>
+		<p>Map authored by me, TastyFreeze</p>
+	</section>
+
+	<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-locatecontrol/0.72.0/L.Control.Locate.min.js" integrity="sha512-Gq+3lCPlR6oaTfAIvLeTbxvffhahkZqfiyEEu5ua7JIo9Wx1RlwHDkt0okgwjyTS303O3FKZPuyBDi/QKXvi7g==" crossorigin="anonymous"></script>
+	<script>
+		var options = {
+			center: [38.037, -84.5],
+			zoom: 15,
+			zoomControl: false
+		}
+
+		var fridaysAfterWork = {
+			"features": [{
+					"geometry": {
+						"coordinates": [
+							[
+								-84.5039899,
+								38.0388059
+							],
+							[
+								-84.50377,
+								38.03862
+							],
+							[
+								-84.50363,
+								38.0385
+							],
+							[
+								-84.50344,
+								38.03836
+							],
+							[
+								-84.50337,
+								38.03831
+							],
+							[
+								-84.50332,
+								38.03828
+							],
+							[
+								-84.50319,
+								38.03821
+							],
+							[
+								-84.50316,
+								38.03819
+							],
+							[
+								-84.50306,
+								38.03814
+							],
+							[
+								-84.50274,
+								38.03802
+							],
+							[
+								-84.50259,
+								38.03798
+							],
+							[
+								-84.50251,
+								38.03796
+							],
+							[
+								-84.502511,
+								38.0379618
+							],
+							[
+								-84.50247,
+								38.038
+							],
+							[
+								-84.5023,
+								38.03812
+							],
+							[
+								-84.5023025,
+								38.0381178
+							],
+							[
+								-84.50167,
+								38.03808
+							],
+							[
+								-84.50156,
+								38.03815
+							],
+							[
+								-84.50138,
+								38.03827
+							],
+							[
+								-84.50132,
+								38.03829
+							],
+							[
+								-84.50129,
+								38.0383
+							],
+							[
+								-84.50124,
+								38.03831
+							],
+							[
+								-84.50121,
+								38.03831
+							],
+							[
+								-84.50114,
+								38.03832
+							],
+							[
+								-84.50108,
+								38.03833
+							],
+							[
+								-84.50095,
+								38.03835
+							],
+							[
+								-84.50086,
+								38.03838
+							],
+							[
+								-84.50069,
+								38.03842
+							],
+							[
+								-84.50063,
+								38.03844
+							],
+							[
+								-84.5006,
+								38.03845
+							],
+							[
+								-84.50051,
+								38.03847
+							],
+							[
+								-84.5005128,
+								38.0384748
+							],
+							[
+								-84.50028,
+								38.03827
+							],
+							[
+								-84.50015,
+								38.03815
+							],
+							[
+								-84.50003,
+								38.03805
+							],
+							[
+								-84.49979,
+								38.03783
+							],
+							[
+								-84.499788,
+								38.037831
+							],
+							[
+								-84.49942,
+								38.0375
+							],
+							[
+								-84.49897,
+								38.03709
+							],
+							[
+								-84.49813,
+								38.03636
+							],
+							[
+								-84.4978,
+								38.03606
+							],
+							[
+								-84.49732,
+								38.03563
+							],
+							[
+								-84.49715,
+								38.03549
+							],
+							[
+								-84.49631,
+								38.03473
+							],
+							[
+								-84.49604,
+								38.03449
+							],
+							[
+								-84.4959,
+								38.03437
+							],
+							[
+								-84.4959022,
+								38.0343682
+							]
+						],
+						"type": "LineString"
+					},
+					"properties": {
+						"name": "Patterson Office Tower to Best Friend Bar"
+					},
+					"type": "Feature"
+				},
+				{
+					"geometry": {
+						"coordinates": [
+							-84.5041745,
+							38.0386701
+						],
+						"type": "Point"
+					},
+					"properties": {
+						"desc": "Patterson Office Tower, 120 Patterson Dr, Lexington, KY 40506, USA",
+						"name": "Patterson Office Tower",
+						"sym": null
+					},
+					"type": "Feature"
+				},
+				{
+					"geometry": {
+						"coordinates": [
+							-84.496072,
+							38.034252
+						],
+						"type": "Point"
+					},
+					"properties": {
+						"desc": "Best Friend Bar, 500 Euclid Ave, Lexington, KY 40502, USA",
+						"name": "Best Friend Bar",
+						"sym": null
+					},
+					"type": "Feature"
+				}
+			],
+			"type": "FeatureCollection"
+		}
+
+		var map = L.map('map', options);
+
+		// add zoom control to top right window position
+		L.control.zoom({
+			position: 'topright'
+		}).addTo(map);
+
+		// Get basemap URL from Leaflet Providers
+		var basemap_url = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
+
+		// Get basemap attributes from Leaflet Providers
+		var basemap_attributes = {
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+			subdomains: 'abcd',
+			maxZoom: 19
+		};
+		// requests some map tiles
+		var tiles = L.tileLayer(basemap_url, basemap_attributes);
+
+		map.addLayer(tiles);
+
+		//*** ALTER CODE BELOW ***//
+		// Map GeoJSON from fridaysAfterWork variable
+		var route = L.geoJson(fridaysAfterWork).addTo(map); 
+		
+		// Add interactivity to the map layer
+		route.on("click", function (e) {
+			
+			popup = "<h2>Location</h2>" + 
+			e.latlng.lat.toLocaleString() + "&deg;, " + 
+			e.latlng.lng.toLocaleString() + "&deg;"
+			
+			// Check to see if the browser is mobile
+			if (L.Browser.mobile) {
+				L.marker(e.latlng).bindPopup(popup).addTo(map)
+			} else {
+				L.marker(e.latlng).bindTooltip(popup).addTo(map)
+			}
+		})
+
+		//*** ***** **** ***** ***//
+	</script>
+
+</body>
+
+</html>
